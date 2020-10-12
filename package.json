@@ -13,12 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/iHackFX/vkhack_bel202010.git"
   },
+  "keywords": [],
   "author": "iHackFX & denuwall",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/iHackFX/vkhack_bel202010/issues"
-  },
-  "homepage": "https://github.com/iHackFX/vkhack_bel202010#readme",
+  "license": "MIT",
   "devDependencies": {
     "cross-env": "^5.2.0",
     "react-hot-loader": "^4.9.0",
