@@ -1,0 +1,21 @@
+/* #home > .Panel__in {
+  background: rgb(39, 135, 245);
+  background: linear-gradient(
+    40deg,
+    rgba(39, 135, 245, 1) 53%,
+    rgba(151, 190, 255, 1) 100%
+  );
+  height: 40%;
+  width: 100%;
+}
+#container {
+  min-height: 100%;
+} */
+/* div {
+  background: rgb(39, 135, 245);
+  background: linear-gradient(
+    90deg,
+    rgba(39, 135, 245, 1) 53%,
+    rgba(151, 190, 255, 1) 100%
+  );
+} */
