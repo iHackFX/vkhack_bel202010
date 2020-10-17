@@ -4,7 +4,6 @@ import View from '@vkontakte/vkui/dist/components/View/View';
 import ScreenSpinner from '@vkontakte/vkui/dist/components/ScreenSpinner/ScreenSpinner';
 import '@vkontakte/vkui/dist/vkui.css';
 import Home from './panels/Home';
-import Advance from './panels/Advance';
 
 const App = () => {
 	const [activePanel, setActivePanel] = useState('home');
@@ -34,7 +33,6 @@ const App = () => {
 	return (
 		<View activePanel={activePanel} popout={popout}>
 			<Home id='home' fetchedUser={fetchedUser} go={go} />
-			<Advance id='Advance' go={go} setPopout={setPopout}/>
 		</View>
 	);
 }
