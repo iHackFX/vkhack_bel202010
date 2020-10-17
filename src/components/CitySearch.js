@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Search } from "@vkontakte/vkui";
-import https from "https";
-import { request } from "http";
+import kladrApi from "kladrapi-for-node";
 
+const Kladr = new kladrApi();
 const CitySearch = ({ id }) => {
   const [searchValue, setSearchValue] = useState(null);
   function search(query) {
@@ -18,20 +18,9 @@ const CitySearch = ({ id }) => {
         q = { query: q[2], contentType: "building", withParent: 0 };
         break;
     }
-
-    let url =
-      "https://kladr-api.ru/api.php?query=" +
-      q.query +
-      "&oneString=1&limit=1&withParent=1";
-    let opts = {
-      method: "GET",
-      url: url,
-      json: true,
-    };
-
-    fetch(url)
-      .then(response => response.json())
-      .then(json => this.setState({ users: json.data }));
+    Kladr.getData(q, (err, result) => {
+      console.log(err, result);
+    });
   }
 
   return (
