@@ -94,14 +94,14 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
               <Input id="create-name" type="text" top="Название беседы"></Input>
               <Button
                 size="xl"
-                onClick={() =>{
+                onClick={() => {
                   var a = createConversation(
                     document.getElementById("create-name").value,
                     fetchedUser.id,
                     document.getElementById("create-location").value,
                     setPopout
                   );
-                  if (a === "Error"){
+                  if (a === "Error") {
                     setPopout(
                       <ActionSheet onClose={() => setPopout(null)}>
                         <ActionSheetItem autoclose>
@@ -110,8 +110,7 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
                       </ActionSheet>
                     );
                   }
-                }
-                }
+                }}
                 mode="commerce"
                 before={<Icon28AddOutline />}
               >
@@ -125,7 +124,19 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
   }
   return (
     <Panel id={id}>
-      <PanelHeader>HOMА</PanelHeader>
+      <PanelHeader
+        onClick={() => {
+          setPopout(
+            <ActionSheet onClose={() => setPopout(null)}>
+              <ActionSheetItem autoclose>
+                <Image src="https://media.discordapp.net/attachments/766932818424758295/767349098121658368/903750d0f8901a1a.png"/>
+              </ActionSheetItem>
+            </ActionSheet>
+          );
+        }}
+      >
+        HOMА
+      </PanelHeader>
       <Div>
         <Group>
           <Div id="div-search">
@@ -172,7 +183,14 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
                     href={pubConversations.invite}
                     target="_blank"
                   >
-                    <Cell before={<Avatar src="https://sun9-76.userapi.com/LYAFbZ7MpqMxsm3UWY8fyuL3T94ergKBUJ6zRg/p4F07S72ZT4.jpg" size={40} />}>
+                    <Cell
+                      before={
+                        <Avatar
+                          src="https://sun9-76.userapi.com/LYAFbZ7MpqMxsm3UWY8fyuL3T94ergKBUJ6zRg/p4F07S72ZT4.jpg"
+                          size={40}
+                        />
+                      }
+                    >
                       {pubConversations.name}
                     </Cell>
                   </Link>
@@ -184,7 +202,7 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
                   <Cell
                     key={idx}
                     onClick={() => addedPopout(conversations.invite)}
-                    before={<Avatar src={fetchedUser.photo_200} size={40} />}
+                    before={<Avatar size={40} />}
                   >
                     {conversations.name}
                   </Cell>
@@ -207,20 +225,24 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
           </Div>
         </Group>
       </Div>
-      {viewAddresses ? <FixedLayout vertical="bottom">
-        <Tabs>
-          <TabsItem style={buttonStyle}>
-             <Button
-              size="xl"
-              onClick={() => createConversationsModal()}
-              mode="commerce"
-              before={<Icon28AddOutline />}
-            >
-              Создать
-            </Button> 
-          </TabsItem>
-        </Tabs>
-      </FixedLayout> : ""}
+      {viewAddresses ? (
+        <FixedLayout vertical="bottom">
+          <Tabs>
+            <TabsItem style={buttonStyle}>
+              <Button
+                size="xl"
+                onClick={() => createConversationsModal()}
+                mode="commerce"
+                before={<Icon28AddOutline />}
+              >
+                Создать
+              </Button>
+            </TabsItem>
+          </Tabs>
+        </FixedLayout>
+      ) : (
+        ""
+      )}
     </Panel>
   );
 };
