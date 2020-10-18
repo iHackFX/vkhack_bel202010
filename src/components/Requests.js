@@ -1,6 +1,3 @@
-import react, { Component } from "react";
-import { render } from "react-dom";
-import { ActionSheet, ActionSheetItem } from "@vkontakte/vkui";
 import axios from "axios";
 export function getUserConversations(userId, setConversations) {
   var config = {
