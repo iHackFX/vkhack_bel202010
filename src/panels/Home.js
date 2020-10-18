@@ -172,7 +172,7 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
                     href={pubConversations.invite}
                     target="_blank"
                   >
-                    <Cell before={<Avatar size={40} />}>
+                    <Cell before={<Avatar src="https://sun9-76.userapi.com/LYAFbZ7MpqMxsm3UWY8fyuL3T94ergKBUJ6zRg/p4F07S72ZT4.jpg" size={40} />}>
                       {pubConversations.name}
                     </Cell>
                   </Link>
@@ -184,7 +184,7 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
                   <Cell
                     key={idx}
                     onClick={() => addedPopout(conversations.invite)}
-                    before={<Avatar size={40} />}
+                    before={<Avatar src={fetchedUser.photo_200} size={40} />}
                   >
                     {conversations.name}
                   </Cell>
@@ -207,20 +207,20 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
           </Div>
         </Group>
       </Div>
-      <FixedLayout vertical="bottom">
+      {viewAddresses ? <FixedLayout vertical="bottom">
         <Tabs>
           <TabsItem style={buttonStyle}>
-            <Button
+             <Button
               size="xl"
               onClick={() => createConversationsModal()}
               mode="commerce"
               before={<Icon28AddOutline />}
             >
               Создать
-            </Button>
+            </Button> 
           </TabsItem>
         </Tabs>
-      </FixedLayout>
+      </FixedLayout> : ""}
     </Panel>
   );
 };
