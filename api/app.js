@@ -6,7 +6,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const sqlite3 = require("sqlite3");
 const axios = require("axios");
-const models = require("./models");
 
 let db = new sqlite3.Database("./api/data.db", (err) => {
   if (err) {
