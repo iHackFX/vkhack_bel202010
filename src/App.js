@@ -9,6 +9,7 @@ const App = () => {
 	const [activePanel, setActivePanel] = useState('home');
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
 	const [fetchedUser, setUser] = useState(null);
+	const [modal, setModal] = useState(null);
 
 	useEffect(() => {
 		bridge.subscribe(({ detail: { type, data }}) => {
@@ -28,11 +29,10 @@ const App = () => {
 
 	const go = e => {
 		setActivePanel(e.currentTarget.dataset.to);
-	};
-
+	};	
 	return (
-		<View activePanel={activePanel} popout={popout}>
-			<Home id='home' fetchedUser={fetchedUser} go={go} />
+		<View activePanel={activePanel} popout={popout} modal={modal}>
+			<Home id='home' fetchedUser={fetchedUser} go={go} setModal={setModal} setPopout={setPopout} />
 		</View>
 	);
 }

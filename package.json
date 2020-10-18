@@ -4,10 +4,12 @@
   "description": "vkhack_bel202010",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env PORT=10888 HTTPS=true react-scripts start",
+    "frontend": "cross-env PORT=10888 HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "predeploy": "npm run build",
-    "deploy": "vk-miniapps-deploy"
+    "deploy": "vk-miniapps-deploy",
+    "backend": "node ./api/index.js",
+    "start": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "repository": {
     "type": "git",
@@ -25,20 +27,25 @@
     "@vkontakte/icons": "^1.18.2",
     "@vkontakte/vk-bridge": "^2.3.0",
     "@vkontakte/vk-miniapps-deploy": "0.0.17",
+    "@vkontakte/vk-qr": "^2.0.10",
     "@vkontakte/vkui": "^3.5.0",
     "axios": "^0.20.0",
     "babel-eslint": "^10.1.0",
+    "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
+    "concurrently": "^5.3.0",
     "core-js": "^3.6.4",
     "eruda": "^2.2.0",
     "eruda-code": "^2.0.0",
     "eruda-dom": "^2.0.0",
+    "express": "^4.17.1",
     "http": "0.0.1-security",
-    "kladrapi-for-node": "0.0.2",
     "prop-types": "^15.7.2",
+    "public-ip": "^4.0.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "vk-io": "^4.0.3"
   },
   "browserslist": {
     "production": [

@@ -1,41 +1,24 @@
 import React, { useState } from "react";
 import { Search } from "@vkontakte/vkui";
-import axios from "axios";
+import { search } from "./Requests";
 
-const CitySearch = ({ id, setViewAddresses }) => {
+const CitySearch = ({ id, setViewAddresses, setPubConversations }) => {
   const [searchValue, setSearchValue] = useState(null);
-  function search(query) {
-    var config = {
-      method: "get",
-      url:
-        "https://cors-anywhere.herokuapp.com/https://kladr-api.ru/api.php?query=" +
-        query +
-        "&oneString=1&limit=5&withParent=1",
-      headers: {
-        Origin: "http://localhost:10888",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log(response.data);
-        if (response.data.result !== undefined) {
-          setViewAddresses(response.data.result);
-        }
-      })
-      .catch(function (error) {});
-  }
   return (
     <Search
       id={id}
+      onEmptied={() => setPubConversations(null)}
+      onIconClick={() => setPubConversations(null)}
       onChange={() => {
         var query = document.getElementById(id).value;
         setSearchValue(query);
         if (query.length > 3) {
-          search(searchValue);
+          search(searchValue, setViewAddresses);
+        }else{
+          setViewAddresses(null);
         }
-      }}
+      }
+    }
       after={null}
     ></Search>
   );
