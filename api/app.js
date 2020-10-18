@@ -37,7 +37,7 @@ class Application {
   constructor() {
     this.expressApp = express();
     this.attachRoutes();
-    this.tokenVK = "ТУТ ТОКЕН"; // <----------
+    this.tokenVK = "Ваш токен"; // <----------
   }
 
   attachRoutes() {
@@ -46,7 +46,6 @@ class Application {
 
     var chat_id = null;
     var invite = null;
-    //Это уже моё
     app.get("/getConversations", this.getConversations.bind(this));
     app.get("/createConversation", async (req, res) => {
       let creator_id = req.query.creator_id;
@@ -64,21 +63,21 @@ class Application {
       const result = response.data;
       let chat_id = result.response + 2000000000;
       const url2 =
-        "https://api.vk.com/method/messages.getInviteLink?peer_id="
+        "https://api.vk.com/method/messages.getInviteLink?peer_id=" + 
         encodeURIComponent(chat_id) +
         "&reset=0&group_id=199550918" +
         "&access_token=" +
         this.tokenVK +
         "&v=5.52";
       const response2 = await axios.get(url2);
-      const invite = response2.data;
-      if (title, chat_id, creator_id, invite, location){
+      const invite = response2.data.response.link;
+      if (title && chat_id && creator_id && invite && location){
         var sql =
         "INSERT INTO conversations (chat_id, name, creator_id, invite, location) VALUES (?, ?, ?, ?, ?)";
         var params = [chat_id, title, creator_id, invite, location];
         db.run(sql, params);
       }
-      if (result2.error !== undefined) {
+      if (invite !== undefined) {
         res.json({
           status: "Error",
         });
@@ -109,7 +108,6 @@ class Application {
       } else {
         var sql =
           "SELECT name, chat_id, creator_id, invite, location FROM conversations";
-        var params = [location];
       }
 
       db.all(sql, params, (err, rows) => {
