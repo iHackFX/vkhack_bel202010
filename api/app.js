@@ -37,7 +37,7 @@ class Application {
   constructor() {
     this.expressApp = express();
     this.attachRoutes();
-    this.tokenVK = "ВАШ ТОКЕН ТУТ"; // <----------
+    this.tokenVK = "ТУТ ТОКЕН"; // <----------
   }
 
   attachRoutes() {
@@ -49,43 +49,35 @@ class Application {
     //Это уже моё
     app.get("/getConversations", this.getConversations.bind(this));
     app.get("/createConversation", async (req, res) => {
-      const api = async (method, params, token = servToken) => {
-        const res = await axios({
-          method: "POST",
-          url: `https://api.vk.com/method/${method}?access_token=${token}&v=5.122`,
-          params,
-        });
-        if (!res.data.response && res.data.response !== 0) {
-          return res.data;
-        }
-        return res.data.response;
-      };
-
       let creator_id = req.query.creator_id;
       let location = req.query.location;
       let title = req.query.name;
-      var url =
+      const url =
         "https://api.vk.com/method/messages.createChat?user_ids=" +
-        creator_id +
+        encodeURIComponent(creator_id) +
         "&title=" +
-        title +
+        encodeURIComponent(title) +
         "&group_id=199550918&access_token=" +
         this.tokenVK +
         "&v=5.52";
       const response = await axios.get(url);
       const result = response.data;
       let chat_id = result.response + 2000000000;
-      console.log(chat_id);
       const url2 =
-        "https://api.vk.com/method/messages.getInviteLink?peer_id=" +
-        chat_id +
+        "https://api.vk.com/method/messages.getInviteLink?peer_id="
+        encodeURIComponent(chat_id) +
         "&reset=0&group_id=199550918" +
         "&access_token=" +
         this.tokenVK +
         "&v=5.52";
       const response2 = await axios.get(url2);
-      const result2 = response2.data;
-      console.log(result2);
+      const invite = response2.data;
+      if (title, chat_id, creator_id, invite, location){
+        var sql =
+        "INSERT INTO conversations (chat_id, name, creator_id, invite, location) VALUES (?, ?, ?, ?, ?)";
+        var params = [chat_id, title, creator_id, invite, location];
+        db.run(sql, params);
+      }
       if (result2.error !== undefined) {
         res.json({
           status: "Error",
