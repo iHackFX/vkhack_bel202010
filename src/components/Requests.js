@@ -1,3 +1,6 @@
+import react, { Component } from "react";
+import { render } from "react-dom";
+import { ActionSheet, ActionSheetItem } from "@vkontakte/vkui";
 import axios from "axios";
 export function getUserConversations(userId, setConversations) {
   var config = {
@@ -63,7 +66,7 @@ export function search(query, setViewAddresses) {
     })
     .catch(function (error) {});
 }
-export function createConversation(name, userId, location, setModal) {
+export function createConversation(name, userId, location, setPopout) {
   var config = {
     method: "get",
     url:
@@ -72,8 +75,7 @@ export function createConversation(name, userId, location, setModal) {
       ":8000/createConversation?name=" +
       name +
       "&creator_id=" +
-      userId
-     +
+      userId +
       "&location=" +
       location,
     headers: {
@@ -83,8 +85,8 @@ export function createConversation(name, userId, location, setModal) {
   };
   axios(config)
     .then(function (response) {
-      if (response.data.data !== undefined) {
-        setModal("");
+      if (response.data.status === "Error") {
+        return("Error");
       }
     })
     .catch(function (error) {

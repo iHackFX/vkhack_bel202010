@@ -5,17 +5,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const sqlite3 = require("sqlite3");
-const models = require("./models");
-const http = require("http");
-const { VK } = require("vk-io");
 const axios = require("axios");
-
-const tokenVK =
-  "1afc994856824789945759895f9fe43d3c54ac954482b2b3f8652c1ca20ec6319fee2f84b503113839940";
-
-const vk = new VK({
-  token: tokenVK,
-});
+const models = require("./models");
 
 let db = new sqlite3.Database("./api/data.db", (err) => {
   if (err) {
@@ -48,17 +39,67 @@ class Application {
     this.expressApp = express();
     this.manager = new models.ChatRoomManager();
     this.attachRoutes();
-    this.chat_id = null;
-    this.invite = null;
+    this.tokenVK =
+      "1afc994856824789945759895f9fe43d3c54ac954482b2b3f8652c1ca20ec6319fee2f84b503113839940";
   }
 
   attachRoutes() {
     let app = this.expressApp;
     let jsonParser = bodyParser.json();
 
+    var chat_id = null;
+    var invite = null;
     //Это уже моё
     app.get("/getConversations", this.getConversations.bind(this));
-    app.get("/createConversation", this.createConversation.bind(this));
+    app.get("/createConversation", async (req, res) => {
+      const api = async (method, params, token = servToken) => {
+        const res = await axios({
+          method: "POST",
+          url: `https://api.vk.com/method/${method}?access_token=${token}&v=5.122`,
+          params,
+        });
+        if (!res.data.response && res.data.response !== 0) {
+          return res.data;
+        }
+        return res.data.response;
+      };
+
+      let creator_id = req.query.creator_id;
+      let location = req.query.location;
+      let title = req.query.name;
+      var url =
+        "https://api.vk.com/method/messages.createChat?user_ids=" +
+        creator_id +
+        "&title=" +
+        title +
+        "&group_id=199550918&access_token=" +
+        this.tokenVK +
+        "&v=5.52";
+      const response = await axios.get(url);
+      const result = response.data;
+      let chat_id = result.response + 2000000000;
+      console.log(chat_id);
+      const url2 =
+        "https://api.vk.com/method/messages.getInviteLink?peer_id=" +
+        chat_id +
+        "&reset=0&group_id=199550918" +
+        "&access_token=" +
+        this.tokenVK +
+        "&v=5.52";
+      const response2 = await axios.get(url2);
+      const result2 = response2.data;
+      console.log(result2);
+      if (result2.error !== undefined) {
+        res.json({
+          status: "Error",
+        });
+      } else {
+        res.json({
+          status: "OK",
+          data: result,
+        });
+      }
+    });
   }
 
   // Обработчик получения комнат
@@ -97,104 +138,7 @@ class Application {
       });
     }
   }
-
-  getChat_id(creator_id, name) {
-    var config = {
-      method: "get",
-      url:
-        "https://api.vk.com/method/messages.createChat?user_ids=" +
-        creator_id +
-        "&title=" +
-        name +
-        "&group_id=199550918&token=" +
-        tokenVK +
-        "&v=5.52",
-      headers: {
-        Origin: "http://localhost:10888",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    axios(config)
-      .then(function (response) {
-        if (response.data.response.link !== undefined) {
-          this.chat_id = data.response.link;
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
-  getInviteLink(chat_id) {
-    var config = {
-      method: "get",
-      url:
-        "https://api.vk.com/method/messages.getInviteLink?chat_id=" +
-        (chat_id + 2000000000) +
-        "&rest=0&group_id=199550918&token=" +
-        tokenVK +
-        "&v=5.52",
-      headers: {
-        Origin: "http://localhost:10888",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    axios(config)
-      .then(function (response) {
-        if (response.data.response.link !== undefined) {
-          this.invite = data.response.link;
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
-  createConversation(req, res) {
-    let creator_id = req.query.creator_id;
-    let name = req.query.name;
-    let location = req.query.location;
-    try {
-      this.getChat_id(creator_id, name);
-      this.getChat_id(creator_id, name);
-      this.getInviteLink(chat_id);
-      console.log(d,g);
-    } catch (e) {
-      res.json({
-        status: { Error: e },
-      });
-    }
-    try {
-      var a = this.val(creator_id);
-      console.log(a);
-    } catch (e) {
-      res.json({
-        status: { Error: e },
-      });
-    }
-    console.log(name, chat_id, creator_id, invite, location);
-    try {
-      var params = [];
-      if (creator_id && name && location && invite) {
-        var sql =
-          "INSERT INTO conversations (name, creator_id, invite, location) VALUES (?, ?, ?, ?)";
-        var params = [name, creator_id, invite, location];
-        console.log(sql, params);
-        db.run(sql, params);
-        res.json({
-          status: "OK",
-        });
-      } else {
-        res.json({
-          status: { Error: "One of params is missing" },
-        });
-      }
-    } catch (e) {
-      res.json({
-        status: { Error: e },
-      });
-    }
-  }
 }
+
 // Экспортируем наш класс наружу
 module.exports = Application;

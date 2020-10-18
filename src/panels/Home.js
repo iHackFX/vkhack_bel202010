@@ -94,13 +94,23 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
               <Input id="create-name" type="text" top="Название беседы"></Input>
               <Button
                 size="xl"
-                onClick={() =>
-                  createConversation(
+                onClick={() =>{
+                  var a = createConversation(
                     document.getElementById("create-name").value,
                     fetchedUser.id,
                     document.getElementById("create-location").value,
-                    setModal
-                  )
+                    setPopout
+                  );
+                  if (a === "Error"){
+                    setPopout(
+                      <ActionSheet onClose={() => setPopout(null)}>
+                        <ActionSheetItem autoclose>
+                          На сегодня всё! Лимит!
+                        </ActionSheetItem>
+                      </ActionSheet>
+                    );
+                  }
+                }
                 }
                 mode="commerce"
                 before={<Icon28AddOutline />}
