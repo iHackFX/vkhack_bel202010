@@ -1,14 +1,25 @@
-import react, { Component } from "react";
-import { render } from "react-dom";
-import { ActionSheet, ActionSheetItem } from "@vkontakte/vkui";
 import axios from "axios";
+import { json } from "body-parser";
+
+const redirConf = json.bind({
+  corsAnywhere: "https://cors-anywhere.herokuapp.com/",
+  local: {
+    ip: "95.71.15.60",
+    port: "8000",
+    protocol: "http://",
+  },
+});
+
 export function getUserConversations(userId, setConversations) {
   var config = {
     method: "get",
     url:
-      "https://cors-anywhere.herokuapp.com/http://" +
-      "95.71.15.60" +
-      ":8000/getConversations?userID=" +
+      redirConf.corsAnywhere +
+      redirConf.local.protocol +
+      redirConf.local.ip +
+      ":" +
+      redirConf.local.port +
+      "/getConversations?userID=" +
       userId,
     headers: {
       Origin: "http://localhost:10888",
@@ -86,7 +97,7 @@ export function createConversation(name, userId, location, setPopout) {
   axios(config)
     .then(function (response) {
       if (response.data.status === "Error") {
-        return("Error");
+        return "Error";
       }
     })
     .catch(function (error) {

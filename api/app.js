@@ -39,8 +39,7 @@ class Application {
     this.expressApp = express();
     this.manager = new models.ChatRoomManager();
     this.attachRoutes();
-    this.tokenVK =
-      "1afc994856824789945759895f9fe43d3c54ac954482b2b3f8652c1ca20ec6319fee2f84b503113839940";
+    this.tokenVK = "ВАШ ТОКЕН ТУТ"; // <----------
   }
 
   attachRoutes() {

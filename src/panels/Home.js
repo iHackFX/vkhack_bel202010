@@ -22,7 +22,7 @@ import {
   FormLayout,
   ActionSheet,
   ActionSheetItem,
-  Textarea,
+  Textarea
 } from "@vkontakte/vkui";
 import qr from "@vkontakte/vk-qr";
 import CitySearch from "./../components/CitySearch";
@@ -124,17 +124,7 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
   }
   return (
     <Panel id={id}>
-      <PanelHeader
-        onClick={() => {
-          setPopout(
-            <ActionSheet onClose={() => setPopout(null)}>
-              <ActionSheetItem autoclose>
-                <Image src="https://media.discordapp.net/attachments/766932818424758295/767349098121658368/903750d0f8901a1a.png"/>
-              </ActionSheetItem>
-            </ActionSheet>
-          );
-        }}
-      >
+      <PanelHeader>
         HOMА
       </PanelHeader>
       <Div>
@@ -225,7 +215,7 @@ const Home = ({ id, fetchedUser, setModal, setPopout }) => {
           </Div>
         </Group>
       </Div>
-      {viewAddresses ? (
+      {pubConversations ? (
         <FixedLayout vertical="bottom">
           <Tabs>
             <TabsItem style={buttonStyle}>

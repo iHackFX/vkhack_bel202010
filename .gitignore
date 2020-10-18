@@ -18,3 +18,5 @@ package-lock.json
 .idea
 
 ngrok.exe
+
+/api/data.db
