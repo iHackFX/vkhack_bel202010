@@ -36,7 +36,6 @@ let db = new sqlite3.Database("./api/data.db", (err) => {
 class Application {
   constructor() {
     this.expressApp = express();
-    this.manager = new models.ChatRoomManager();
     this.attachRoutes();
     this.tokenVK = "ВАШ ТОКЕН ТУТ"; // <----------
   }
